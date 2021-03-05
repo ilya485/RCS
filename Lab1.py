@@ -25,7 +25,7 @@ P_list = []
 
 def get_T(gamma):
     global h, f_list, ten_intervals, P_list
-    h = time_table[-1] / 10
+    h = (time_table[-1] - time_table[0]) / 10
 
     for i in range(10):
         ten_intervals.append([a for a in time_table if (i * h <= a <= (i+1) * h)])
@@ -41,9 +41,11 @@ def get_T(gamma):
     p_more = min([p for p in P_list if p > gamma])
 
     index_more = P_list.index(p_more)
+    index_less = P_list.index(p_less)
 
-    d = (p_more - gamma) / (p_more - p_less)
-    T = index_more + h * d
+
+    d = (p_less - gamma) / (p_less - p_more)
+    T = (h * index_less) - (h * d)
     return T
 
 
@@ -65,3 +67,4 @@ print("Середній наробіток до відмови Tср:", sum(time
 print("γ-відсотковий наробіток на відмову Tγ при γ = ",gamma,":", get_T(gamma))
 print("ймовірність безвідмовної роботи на час", T_infail, "годин:", time_unfail(T_infail))
 print("інтенсивність відмов на час ", T_fail, " годин:",  lamb(T_fail))
+
